@@ -1,0 +1,23 @@
+version: "3"
+services:
+  worker:
+    restart: always
+    build: ./hive
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          memory: 3GB
+        reservations:
+          memory: 2GB
+    command: bash -c "ruby worker.rb"
+    network_mode: "host"
+    environment:
+      #> To test locally if using [Mac OSX] use your local ip address ex: 192.168.1.88
+      #> Or, on Linux use 127.0.0.1
+      MASTER_NODE: '127.0.0.1' 
+      THREAD_POOL: 100
+    ulimits:
+      as:
+        hard: 4294967296  # 4GB
+        soft: 3221225472  # 3GB
